@@ -1,5 +1,11 @@
 # API
 
+## Todos
+
+- backup redis boards in Postgres database
+- action history (save as 'snapshots' in database)?
+- deploy frontend; whitelist IP from rate limiter and action cable
+
 ## Add Pixel
 
 ```
