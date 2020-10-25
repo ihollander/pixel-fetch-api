@@ -4,16 +4,7 @@ class Board
   class << self
     def create(id)
       board = self.new(id)
-  
-      # TODO: this is super slow... but it'll only run during seeding so maybe fine?
-      l = 100
-      w = 100
-      
-      i = 0 
-      while i < l * w * 4
-        board.set_index(i, 0, false)
-        i += 1
-      end
+      board.fill
       board
     end
   
@@ -30,6 +21,13 @@ class Board
   
   def initialize(id)
     @id = id
+  end
+
+  def fill
+    l = 100
+    w = 100
+    bitfield = "\u0000" * (l * w * 4)
+    Redis.current.set self.id, bitfield
   end
 
   def bitfield
