@@ -35,13 +35,5 @@ module PixelFetchApi
     config.api_only = true
 
     config.middleware.use Rack::Attack
-
-    config.after_initialize do
-      Game.all.each do |game|
-        unless game.board
-          Board.create_from_snapshot(game.cohort)
-        end
-      end
-    end
   end
 end
