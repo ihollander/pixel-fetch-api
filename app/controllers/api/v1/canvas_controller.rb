@@ -9,15 +9,15 @@ class Api::V1::CanvasController < ApplicationController
     end
   end
 
-  def create
-    board = Board.find(params[:id])
-    if board
-      render body: board.bitfield, status: :ok
-    else
-      board = Board.create(params[:id])
-      render body: board.bitfield, status: :created
-    end
-  end
+  # def create
+  #   board = Board.find(params[:id])
+  #   if board
+  #     render body: board.bitfield, status: :ok
+  #   else
+  #     board = Board.create(params[:id])
+  #     render body: board.bitfield, status: :created
+  #   end
+  # end
 
   def update
     # validate request
