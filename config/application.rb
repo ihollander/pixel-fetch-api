@@ -35,6 +35,7 @@ module PixelFetchApi
     config.api_only = true
 
     config.middleware.use Rack::Attack
+    config.middleware.use Rack::Attack::RateLimit, throttle: ['requests_by_ip']
 
     config.after_initialize do
       Game.all.each do |game|
