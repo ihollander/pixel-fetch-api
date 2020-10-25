@@ -1,4 +1,4 @@
-# API Info
+# Pixel Fetch API
 
 ## Add Pixel
 
