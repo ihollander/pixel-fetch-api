@@ -32,10 +32,23 @@ class Api::V1::CanvasController < ApplicationController
       start_index = ((y * 100) + x) * 4
       board.set_pixel(start_index, r, g, b, a)
 
+      # backup
+      game = Game.find_by(cohort: board.id)
+      if game 
+        # snapshot every 5 minutes
+        if game.snapshots.last && game.snapshots.last.updated_at < (Time.now - (60 * 5))
+          game.take_snapshot
+        end
+        byebug
+        # record move
+        move = Move.new(x: x, y: y, r: r, g: g, b: b, a: a, ip: request.ip)
+        RecordMoveJob.perform_later move
+      end
+
       response = { coords: [x, y], color: [r, g, b, a] }
 
       BoardChannel.broadcast_to board, response
-      
+
       render json: response
     rescue ActionController::ParameterMissing => e
       render json: { message: e.message }, status: 400

@@ -13,6 +13,17 @@ class Board
         self.new(id)
       end
     end
+
+    def create_from_snapshot(id)
+      game = Game.find_by(cohort: id)
+      return nil unless game
+
+      last_snap = game.snapshots.last
+      return nil unless last_snap
+
+      board = self.new(id)
+      Redis.current.set board.id, last_snap.board
+    end
   
     def find_or_create(id)
       self.find(id) || self.create(id)
@@ -39,6 +50,11 @@ class Board
     self.set_index(start_index + 1, g)
     self.set_index(start_index + 2, b)
     self.set_index(start_index + 3, a)
+  end
+
+  def get_index(index)
+    command = ["BITFIELD", self.id, "GET", "u8", "##{index}"]
+    Redis.current.call command
   end
 
   def set_index(index, value, enable_logging = true)
