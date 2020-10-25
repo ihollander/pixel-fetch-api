@@ -10,9 +10,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2020_10_25_121701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "games", force: :cascade do |t|
+    t.string "cohort"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "moves", force: :cascade do |t|
+    t.integer "x"
+    t.integer "y"
+    t.integer "r"
+    t.integer "g"
+    t.integer "b"
+    t.integer "a"
+    t.string "ip"
+    t.bigint "game_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id"], name: "index_moves_on_game_id"
+  end
+
+  create_table "snapshots", force: :cascade do |t|
+    t.binary "board"
+    t.bigint "game_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id"], name: "index_snapshots_on_game_id"
+  end
+
+  add_foreign_key "moves", "games"
+  add_foreign_key "snapshots", "games"
 end

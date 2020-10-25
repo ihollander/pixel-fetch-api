@@ -39,10 +39,9 @@ class Api::V1::CanvasController < ApplicationController
         if game.snapshots.last && game.snapshots.last.updated_at < (Time.now - (60 * 5))
           game.take_snapshot
         end
-        byebug
         # record move
-        move = Move.new(x: x, y: y, r: r, g: g, b: b, a: a, ip: request.ip)
-        RecordMoveJob.perform_later move
+        params = { game_id: game.id, x: x, y: y, r: r, g: g, b: b, a: a, ip: request.ip }
+        RecordMoveJob.perform_later params
       end
 
       response = { coords: [x, y], color: [r, g, b, a] }
