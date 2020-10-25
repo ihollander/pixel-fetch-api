@@ -45,3 +45,5 @@ gem "color", "~> 1.8"
 
 # enable ip rate limiting in config/initializers/rack_attack.rb
 gem "rack-attack", "~> 6.3"
+
+gem "rack-attack-rate-limit", "~> 1.1"
