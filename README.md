@@ -7,7 +7,7 @@ Place a pixel on the canvas, using x-y coordinates and a color.
 ### Endpoint
 
 ```
-PATCH http://pixel-fetch-api.herokuapp.com/api/canvas/:id
+PATCH https://pixel-fetch-api.herokuapp.com/api/canvas/:id
 ```
 
 ### Headers
@@ -59,7 +59,7 @@ Use this endpoint if you'd like to display a snapshot of the current canvas.
 ### Endpoint
 
 ```
-GET http://pixel-fetch-api.herokuapp.com/api/canvas/:id
+GET https://pixel-fetch-api.herokuapp.com/api/canvas/:id
 ```
 
 ### Rate Limit
