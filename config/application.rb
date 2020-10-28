@@ -38,11 +38,11 @@ module PixelFetchApi
     config.middleware.use Rack::Attack::RateLimit, throttle: ['requests_by_ip']
 
     config.after_initialize do
-      Game.all.each do |game|
-        unless game.canvas
-          Canvas.create_from_snapshot(game.name)
-        end
-      end
+      # Game.all.each do |game|
+      #   unless game.canvas
+      #     Canvas.create_from_snapshot(game.name)
+      #   end
+      # end
     end
   end
 end
