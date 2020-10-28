@@ -1,11 +1,11 @@
-class Board
+class Canvas
   attr_reader :id
 
   class << self
     def create(id)
-      board = self.new(id)
-      board.fill
-      board
+      canvas = self.new(id)
+      canvas.fill
+      canvas
     end
   
     def find(id)
@@ -21,8 +21,8 @@ class Board
       last_snap = game.snapshots.last
       return nil unless last_snap
 
-      board = self.new(id)
-      Redis.current.set board.id, last_snap.board
+      canvas = self.new(id)
+      Redis.current.set canvas.id, last_snap.board
     end
   
     def find_or_create(id)

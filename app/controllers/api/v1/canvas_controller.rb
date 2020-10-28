@@ -1,39 +1,39 @@
 class Api::V1::CanvasController < ApplicationController
 
   def show
-    board = Board.find(params[:id])
-    if board
-      render body: board.bitfield
+    canvas = Canvas.find(params[:id])
+    if canvas
+      render body: canvas.bitfield
     else
-      render json: { message: "No board matches that ID" }, status: :not_found
+      render json: { message: "No canvas matches that ID" }, status: :not_found
     end
   end
 
   # def create
-  #   board = Board.find(params[:id])
-  #   if board
-  #     render body: board.bitfield, status: :ok
+  #   canvas = Canvas.find(params[:id])
+  #   if canvas
+  #     render body: canvas.bitfield, status: :ok
   #   else
-  #     board = Board.create(params[:id])
-  #     render body: board.bitfield, status: :created
+  #     canvas = Canvas.create(params[:id])
+  #     render body: canvas.bitfield, status: :created
   #   end
   # end
 
   def update
     # validate request
-    board = Board.find(params[:id])
-    unless board
-      return render json: { message: "No board matches that ID. Make sure the board ID is in the URL: /api/canvas/:id" }, status: :not_found
+    canvas = Canvas.find(params[:id])
+    unless canvas
+      return render json: { message: "No canvas matches that ID. Make sure the canvas ID is in the URL: /api/canvas/:id" }, status: :not_found
     end
 
     begin
       x, y = coords_from_params
       r, g, b, a = rgba_from_params
       start_index = ((y * 100) + x) * 4
-      board.set_pixel(start_index, r, g, b, a)
+      canvas.set_pixel(start_index, r, g, b, a)
 
       # backup
-      game = Game.find_by(cohort: board.id)
+      game = Game.find_by(cohort: canvas.id)
       if game 
         # snapshot every 5 minutes
         if game.snapshots.last && game.snapshots.last.updated_at < (Time.now - (60 * 5))
@@ -46,7 +46,7 @@ class Api::V1::CanvasController < ApplicationController
 
       response = { coords: [x, y], color: [r, g, b, a] }
 
-      BoardChannel.broadcast_to board, response
+      CanvasChannel.broadcast_to canvas, response
 
       render json: response
     rescue ActionController::ParameterMissing => e
