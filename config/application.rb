@@ -40,7 +40,7 @@ module PixelFetchApi
     config.after_initialize do
       Game.all.each do |game|
         unless game.canvas
-          Canvas.create_from_snapshot(game.cohort)
+          Canvas.create_from_snapshot(game.name)
         end
       end
     end

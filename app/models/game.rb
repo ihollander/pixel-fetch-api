@@ -11,11 +11,11 @@ class Game < ApplicationRecord
   end
 
   def canvas
-    Canvas.find(self.cohort)
+    Canvas.find(self.name)
   end
 
   def make_canvas
-    Canvas.create(self.cohort)
+    Canvas.create(self.name)
   end
 
 end

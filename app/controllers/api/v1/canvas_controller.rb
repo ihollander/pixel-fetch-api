@@ -1,5 +1,9 @@
 class Api::V1::CanvasController < ApplicationController
 
+  def index
+    render json: Game.all, only: [:name]
+  end
+
   def show
     canvas = Canvas.find(params[:id])
     if canvas
@@ -9,15 +13,14 @@ class Api::V1::CanvasController < ApplicationController
     end
   end
 
-  # def create
-  #   canvas = Canvas.find(params[:id])
-  #   if canvas
-  #     render body: canvas.bitfield, status: :ok
-  #   else
-  #     canvas = Canvas.create(params[:id])
-  #     render body: canvas.bitfield, status: :created
-  #   end
-  # end
+  def create
+    game = Game.find_or_create_by(name: params[:name])
+    if game
+      render body: game.canvas.bitfield
+    else
+      render json: { message: game.errors.full_messages }, status: 400
+    end
+  end
 
   def update
     # validate request
@@ -33,7 +36,7 @@ class Api::V1::CanvasController < ApplicationController
       canvas.set_pixel(start_index, r, g, b, a)
 
       # backup
-      game = Game.find_by(cohort: canvas.id)
+      game = Game.find_by(name: canvas.id)
       if game 
         # snapshot every 5 minutes
         if game.snapshots.last && game.snapshots.last.updated_at < (Time.now - (60 * 5))

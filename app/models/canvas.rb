@@ -15,7 +15,7 @@ class Canvas
     end
 
     def create_from_snapshot(id)
-      game = Game.find_by(cohort: id)
+      game = Game.find_by(name: id)
       return nil unless game
 
       last_snap = game.snapshots.last
